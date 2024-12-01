@@ -2,6 +2,8 @@ import {FC, useState} from "react";
 import {Button, TextField} from "../../components";
 import {WidgetLayout} from "../../components/layouts";
 import "./loginPageStyle.scss"
+import {useNavigate} from "react-router-dom";
+import {RoutesPath} from "../../constants/commonConstans";
 
 export const LoginPage: FC = () => {
     const [login, setLogin] = useState<string>("")
@@ -22,12 +24,12 @@ export const LoginPage: FC = () => {
         })
     }
 
-    const toRegistrationHandler = () => {
-        console.log({
-            login,
-            password
-        })
+    const toRegistrationHandler = () =>{
+        navigate(RoutesPath.Registration)
     }
+
+    const navigate = useNavigate();
+
 
     return (
         <WidgetLayout>
