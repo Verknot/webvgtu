@@ -34,6 +34,9 @@ export const RegistrationPage: FC = () => {
       navigate(RoutesPath.Login);
     }
 
+    const registrationHandler = () =>{
+        navigate(RoutesPath.Departments);
+    }
 
     return(<div>
         <WidgetLayout>
@@ -48,7 +51,7 @@ export const RegistrationPage: FC = () => {
                     <TextField labelText="Отчество" value={formFields?.midName} type="text" onChange={(value) => changeFieldValue(value, 'login')} />
                 </div>
                 <div className="reg-page__actions">
-                    <Button text = "Войти" onClick= {() => {}} type="primary"/>
+                    <Button text = "Войти" onClick= {registrationHandler} type="primary"/>
                     <Button text = "Зарегистрироваться" onClick={goToLogin} type="secondary"/>
                 </div>
 
