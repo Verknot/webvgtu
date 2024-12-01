@@ -1,0 +1,20 @@
+.button {
+    display: flex;
+    border: none;
+    box-sizing: border-box;
+    border-radius: 3px;
+    min-height: 36px;
+    font-size: 14px;
+    padding: 0 12px;
+    cursor: pointer;
+    font-weight: 600;
+    align-items: center;
+    justify-content: center;
+    min-width: 180px;
+    color: #333333;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
