@@ -4,6 +4,7 @@ import {Route, Routes} from "react-router-dom";
 import {RegistrationPage} from "./pages/registration";
 import {RoutesPath} from "./constants/commonConstans";
 import {DepartmentsPage} from "./pages/department";
+import "./styles/globalStyles.scss"
 
 export const App: React.FC = () => {
 

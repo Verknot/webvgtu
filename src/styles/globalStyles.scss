@@ -1,0 +1,32 @@
+@import "./variables.scss";
+
+@font-face {
+  font-family: "Roboto", sans-serif;
+  src: url("../assets/fonts/Parkinsans.ttf") format("truetype");
+}
+
+*{
+  font-family: "Roboto", sans-serif;
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px $color-scrollShadow;
+    background-color: $color-dirtyWhite;
+  }
+
+  &::-webkit-scrollbar {
+    width: 4px;
+    background-color: $color-dirtyWhite;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $color-baseBlack;
+    border: 1px solid $color-darkgrey;
+    border-radius: 4px;
+  }
+}
+
+body{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
