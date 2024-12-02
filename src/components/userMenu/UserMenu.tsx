@@ -1,26 +1,35 @@
-import {FC} from "react";
+import {FC, useState} from "react";
 import {UserIcon} from "../../assets/icons";
 import "./userMenuStyles.scss";
+import {UserMenuProps} from "./UserMenuProps";
 
-interface MenuItem {
-    id: string;
-    label: string;
-    action: () => void;
-}
-
-interface UserMenuProps {
-    items: Array<MenuItem>;
-}
 
 export const UserMenu: FC<UserMenuProps> = props => {
     const {items} = props;
+    const [show, setShow] = useState<boolean>(false);
+
+
+    const ShowMenuHelder = () =>{
+        setShow(prev =>!prev)
+    }
 
     return (
         <div className="user-menu">
-            <UserIcon/>
-            <div className="user-menu__menu">
-                {items.map(item => (<span key={item.id}>{item.label}</span>))}
-            </div>
+            <UserIcon onClick={ShowMenuHelder}/>
+            {show && (
+                <>
+                    <div className="user-menu__menu">
+                        {items.map(item => (
+                            <span className={"user-menu__menu-item"}
+                                  key={item.id}
+                                  onClick={item.action}
+                            >
+                                {item.label}
+                            </span>))}
+                    </div>
+                    <div className="user-menu__underlay" onClick={ShowMenuHelder}/>
+                </>
+            )}
         </div>
     )
 }
