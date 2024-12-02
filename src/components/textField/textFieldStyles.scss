@@ -1,3 +1,5 @@
+@import "../../styles/variables";
+
 .container {
     box-sizing: border-box;
     display: flex;
@@ -5,7 +7,7 @@
     gap: 4px;
 
     &__lbl {
-        color: #8f8f8f;
+        color: $color-lbl;
         front-size: 14px;
 
         &_strong {
@@ -15,7 +17,7 @@
 
     &__input {
         border: none;
-        border-bottom: 1px solid blue;
+        border-bottom: 1px solid $color-blue;
         outline: none;
         padding: 0;
         font-size: 14px;
