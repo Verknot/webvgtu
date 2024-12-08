@@ -1,9 +1,17 @@
-import {FC} from "react";
+import {FC, useState} from "react";
 import {Layout} from "../../components/layouts";
 import "./departmentsPageStyle.scss"
-import {Button, DropDown, EmployeesList} from "../../components";
+import {Button, DropDown, EmployeesList, Dialog} from "../../components";
 
 export const DepartmentsPage: FC = () =>{
+
+    const [showEmployeeDialog,  setShowEmployeeDialog] = useState(false);
+    const [userActionMode, setUserActionMode] = useState<'create' | 'edit'>('create');
+
+    const  createEmployeeHandler = () => {
+        setUserActionMode('create');
+        setShowEmployeeDialog(true);
+    }
 
     return (
         <Layout>
@@ -30,9 +38,15 @@ export const DepartmentsPage: FC = () =>{
                     }
                     onItemClick={(id) => console.log(id)}
                     />
-                    <Button text ="Добавить сотрудника" className="dep-page_add-user-btn"/>
+                    <Button text ="Добавить сотрудника" className="dep-page_add-user-btn" onClick={createEmployeeHandler}/>
                 </div>
                 <div>
+                    <Dialog title={userActionMode !== 'edit' ? 'Добавить сотрудника' : 'Изменить сотрудника'}
+                            open={showEmployeeDialog}
+                            onSave={() => {}}
+                            onCancel={() => setShowEmployeeDialog(false)}
+                    >
+                    </Dialog>
                     <div>
                         <span>ФИО</span>
                         <div>*</div>
