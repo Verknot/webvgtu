@@ -4,7 +4,7 @@ import {WidgetLayout} from "../../components/layouts";
 import {Button, TextField} from "../../components";
 import {RoutesPath} from "../../constants/commonConstans";
 import {useNavigate} from "react-router-dom";
-import {Auth} from "../../api";
+import {AuthApi} from "../../api";
 import {AxiosError} from "axios";
 
 type FormFieldsNames = "login" | "password"| "repeatPassword" | "lastName" |"firstName" |"midName";
@@ -22,7 +22,7 @@ export const RegistrationPage: FC = () => {
     const [formFields, setFormFields] = useState<RegistrationForm>();
     const [ errorMessage, setErrorMessage] = useState<string>();
     const navigate = useNavigate();
-    const { signUp, signIn } = Auth;
+    const { signUp, signIn } = AuthApi;
 
     const changeFieldValue = (value: string | undefined, fieldName: FormFieldsNames) =>{
         setFormFields(prev => {

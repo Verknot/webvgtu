@@ -16,8 +16,12 @@ import {DropDownItem} from "../../components/dropDown/DropDownProps";
 import {PencilIcon, PlusIcon, TrashIcon, UploadIcon} from "../../assets/icons";
 import { format } from 'date-fns';
 import { Departments } from "../../api";
+import { useAppSelector} from "../../hooks/reduxToolkitHooks";
+import {RoutesPath} from "../../constants/commonConstans";
+import {useNavigate} from "react-router-dom";
 
 export const DepartmentsPage: FC = () => {
+    const { role, accessToken } = useAppSelector((state) => state.user)
 
     const { getDepartments, deleteDepartment } = Departments;
     const [departmentsData, setDepartmentsData] = useState<Array<Department>>([]);
@@ -34,6 +38,18 @@ export const DepartmentsPage: FC = () => {
     const [birthDate, setBirthDate] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(accessToken){
+            if(role === 'user' || !role){
+                navigate(`/${RoutesPath.NoPermissions}`)
+            }
+        } else {
+            navigate(`/${RoutesPath.Login}`)
+        }
+    }, [accessToken, role, navigate]);
 
     useEffect(() => {
         getDepartments()
@@ -166,6 +182,7 @@ export const DepartmentsPage: FC = () => {
             </Dialog>
             <div className="dep-page">
                 <div className="dep-page__users-list-container">
+                    <div>
                     <DropDown items={departmentsData.map(dd => {
                         return {
                             text: dd.name,
@@ -175,9 +192,13 @@ export const DepartmentsPage: FC = () => {
                               label="Отделы:"
                               selectedChanged={(val) => departmentChangeHandler(val)}
                     />
+                    {role === 'admin' && (<>
                     <PlusIcon width={16} height={16} className="dep-page__add-btn" />
                     <PencilIcon/>
                     <TrashIcon onClick={deleteDepartmentHandler}/>
+                    </>
+                    )}
+                    </div>
                     <EmployeesList employeesList={employeesData}
                                    onItemClick={(id) => onEmployeeSelectedHandler(id)}
                                    onItemDelete={(id) => console.log('delete', id)}

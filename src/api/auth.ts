@@ -13,7 +13,7 @@ const signIn = async(loginData: LoginRequestDto) =>{
 const signUp = async(registrationData: RegistrationRequestDto)=>
     await axiosPost('', registrationData) as void;
 
-export const Auth = {
+export const AuthApi = {
     signIn,
     signUp
 }

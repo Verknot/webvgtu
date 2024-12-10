@@ -3,6 +3,12 @@ import {LayoutProps} from "./LayoutProps";
 import "./layoutStyles.scss"
 import {LogoIcon} from "../../../assets/icons";
 import {UserMenu} from "../../userMenu";
+import {useAppSelector} from "../../../hooks/reduxToolkitHooks";
+import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {logOut} from "../../../store/slices/userSlices";
+import {RoutesPath} from "../../../constants/commonConstans";
+import {MenuItem} from "../../userMenu/UserMenuProps";
 
 export const Layout: FC<LayoutProps> = props => {
     const {
@@ -11,6 +17,31 @@ export const Layout: FC<LayoutProps> = props => {
         title,
         children
     } = props
+
+    const role = useAppSelector((state) => state.user);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+
+    const logOutHandler = () =>{
+        dispatch(logOut());
+    }
+
+    const goToAdminisrationHandler = () =>{
+        navigate(`/${RoutesPath.Administration}`)
+    }
+
+    const exitMenuItem: MenuItem = {
+        id: "exit",
+        action: logOutHandler,
+        label: "Выйти"
+    }
+
+    const administrationMenuItem: MenuItem = {
+        id: "go_to_administration",
+        action: goToAdminisrationHandler,
+        label: "Администрирование"
+    }
 
     return (
         <div className="layout">
@@ -23,6 +54,7 @@ export const Layout: FC<LayoutProps> = props => {
                     <div>{headerChild}</div>
                 </div>
                 <div className={ "layout__user-menu"}>
+                    <UserMenu items = { role.role === 'admin' ? [ administrationMenuItem, exitMenuItem] : [exitMenuItem]} />
                     <UserMenu items={[{
                         id: "go_to_administration",
                         action: () => {},
