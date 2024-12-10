@@ -21,15 +21,13 @@ export const LoginPage: FC = () => {
     }
 
     const loginHandler = () => {
-        /*console.log({
-            login,
-            password
-        })
-        navigate(RoutesPath.Departments)*/;
-
         signIn({login, password})
-            .then((resp) => {
-                console.log(resp)
+            .then((respData) => {
+                if (respData.role === 'user') {
+                    navigate('/${Routes Paths.NoPermissions}');
+                } else {
+                    navigate('/${Routes Paths.Departments}');
+                }
             })
             .catch((err) => {
                 console.log(err)

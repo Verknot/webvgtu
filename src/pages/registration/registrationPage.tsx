@@ -22,7 +22,7 @@ export const RegistrationPage: FC = () => {
     const [formFields, setFormFields] = useState<RegistrationForm>();
     const [ errorMessage, setErrorMessage] = useState<string>();
     const navigate = useNavigate();
-    const { signUp } = Auth;
+    const { signUp, signIn } = Auth;
 
     const changeFieldValue = (value: string | undefined, fieldName: FormFieldsNames) =>{
         setFormFields(prev => {
@@ -48,14 +48,32 @@ export const RegistrationPage: FC = () => {
             return;
         }
 
-        signUp({
+
+        const data = { login: formFields.login, password: formFields.password };
+
+        signUp (data).then(() => {
+            signIn(data).then(respData => {
+                if (respData.role === 'user') {
+                    navigate('/${Routes Paths.NoPermissions}');
+                } else {
+                    navigate('/${Routes Paths.Departments}');
+                }
+            }).catch(err =>
+                setErrorMessage((err as AxiosError)?.message)
+        );
+            }).catch((err) => {
+                setErrorMessage((err as AxiosError)?.message)
+            }
+        );
+
+        /*signUp({
             login: formFields.login,
             password: formFields.password
         }).then(() => {
             navigate(RoutesPath.Departments);
         }).catch((err) => {
             setErrorMessage((err as AxiosError)?.message)
-        })
+        })*/
     }
 
 
