@@ -4,10 +4,13 @@ import {WidgetLayout} from "../../components/layouts";
 import "./loginPageStyle.scss"
 import {useNavigate} from "react-router-dom";
 import {RoutesPath} from "../../constants/commonConstans";
+import {Auth} from "../../api";
 
 export const LoginPage: FC = () => {
     const [login, setLogin] = useState<string>("")
     const [password, setPassword] = useState<string>("")
+    const navigate = useNavigate();
+    const { signIn } = Auth;
 
     const loginChangedHandler = (value: string)=> {
         setLogin(value);
@@ -18,18 +21,25 @@ export const LoginPage: FC = () => {
     }
 
     const loginHandler = () => {
-        console.log({
+        /*console.log({
             login,
             password
         })
-        navigate(RoutesPath.Departments);
+        navigate(RoutesPath.Departments)*/;
+
+        signIn({login, password})
+            .then((resp) => {
+                console.log(resp)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     const toRegistrationHandler = () =>{
         navigate(RoutesPath.Registration)
     }
 
-    const navigate = useNavigate();
 
 
     return (
