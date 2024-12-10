@@ -13,54 +13,13 @@ import {
 } from '../../components';
 import { Department, Employee } from "../../types/models";
 import {DropDownItem} from "../../components/dropDown/DropDownProps";
-import {PlusIcon, UploadIcon} from "../../assets/icons";
+import {PencilIcon, PlusIcon, TrashIcon, UploadIcon} from "../../assets/icons";
 import { format } from 'date-fns';
+import { Departments } from "../../api";
 
-const fakeEmployeesData = [
-    {id: 1, lastName: "Иванов", firstName: "Иван", middleName: "Иванович", birthDate: new Date().toISOString(), email: 'ivanov2@mail.ru', phoneNumber: '8-800-535-35-35' },
-    {id: 2, lastName: "Иванов1", firstName: "Иван1", birthDate: new Date().toISOString(), email: 'ivanov@mail.ru', phoneNumber: '8-800-535-35-35'},
-    {id: 3, lastName: "Иванов2", firstName: "Иван2", middleName: "Иванович", birthDate: new Date().toISOString(), email: 'ivanovdasddsa@mail.ru', phoneNumber: '8-800-535-35-35'},
-    {id: 4, lastName: "Иванов3", firstName: "Иван3", middleName: "Иванович", birthDate: new Date().toISOString(), email: 'ivanov1@mail.ru', phoneNumber: '8-800-535-35-35',
-        educations: [{
-            id: 1,
-            description: 'Программист',
-            title: 'ПТУ'
-        },{
-            id: 2,
-            description: 'Курсы повышения квалификации',
-            title: 'lucky.com'
-        },{
-            id: 3,
-            description: 'Информационные системы и технологии',
-            title: 'МГУ'
-        }
-        ],
-        workExperience: [{
-            id: 1,
-            workedYears: 1,
-            description: 'ЗАО'
-        },{
-            id: 2,
-            workedYears: 1,
-            description: 'ООО'
-        },{
-            id: 3,
-            workedYears: 1,
-            description: 'ААА'
-        }]
-    },
-    {id: 5, lastName: "Иванов5", firstName: "Иван4"}
+export const DepartmentsPage: FC = () => {
 
-]
-
-const fakeDepartmentsData = [
-    { id: 1, name: 'Отдел 1', employees: [] },
-    { id: 2, name: 'Отдел 2', employees: fakeEmployeesData },
-    { id: 3, name: 'Отдел 3', employees: [] },
-] as Array<Department>;
-
-export const DepartmentsPage: FC = () =>{
-
+    const { getDepartments, deleteDepartment } = Departments;
     const [departmentsData, setDepartmentsData] = useState<Array<Department>>([]);
     const [employeesData, setEmployeesData] = useState<Array<Employee>>([]);
     const [selectedDepartmentId, setSelectedDepartmentId] = useState<number>();
@@ -77,13 +36,17 @@ export const DepartmentsPage: FC = () =>{
     const [phoneNumber, setPhoneNumber] = useState('');
 
     useEffect(() => {
-        setTimeout(()=> {
-            setDepartmentsData(fakeDepartmentsData);
-            if(Array.isArray(fakeDepartmentsData) && fakeDepartmentsData.length) {
-                setSelectedDepartmentId(fakeDepartmentsData[0].id);
-            }
-        }, 2000);
-    }, []);
+        getDepartments()
+            .then(respData => {
+                setDepartmentsData(respData);
+                if(respData.length){
+                    setSelectedDepartmentId(respData[0].id)
+                }
+            }).catch(err => {
+                setDepartmentsData([]);
+                console.log(err);
+        })
+    }, [getDepartments]);
 
     useEffect(() => {
         const selectedDepartment = departmentsData.find(d => d.id === selectedDepartmentId);
@@ -161,6 +124,24 @@ export const DepartmentsPage: FC = () =>{
 
     }
 
+    const deleteDepartmentHandler = () => {
+        if(!window.confirm("Вы действительно хотитет удалить данный отдел?")){
+            return;
+        }
+        if(!selectedDepartmentId){
+            return;
+        }
+        deleteDepartment(selectedDepartmentId).then(() =>{
+            setDepartmentsData(prev => {
+                const filtered = prev.filter(d => d.id !== selectedDepartmentId)
+                return[...filtered];
+            });
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+
     const userDialogContentRenderer = () => {
         return (
             <>
@@ -194,6 +175,9 @@ export const DepartmentsPage: FC = () =>{
                               label="Отделы:"
                               selectedChanged={(val) => departmentChangeHandler(val)}
                     />
+                    <PlusIcon width={16} height={16} className="dep-page__add-btn" />
+                    <PencilIcon/>
+                    <TrashIcon onClick={deleteDepartmentHandler}/>
                     <EmployeesList employeesList={employeesData}
                                    onItemClick={(id) => onEmployeeSelectedHandler(id)}
                                    onItemDelete={(id) => console.log('delete', id)}
@@ -260,15 +244,7 @@ export const DepartmentsPage: FC = () =>{
                                 </span>
                                     <PlusIcon width={16} height={16}/>
                                 </div>
-                                <EducationList educationList={[{
-                                    id: 1,
-                                    description: 'Инженер программист',
-                                    title: 'Высшее образование'
-                                }, {
-                                    id: 2,
-                                    description: 'Системный администратор',
-                                    title: 'Высшее образование'
-                                }]}/>
+                                <EducationList educationList={ selectedEmployee?.educations ?? [] }/>
                             </div>
                             <div className="dep-page__user-add-info-data__cell">
                                 <div className="dep-page__list-title">
@@ -277,15 +253,7 @@ export const DepartmentsPage: FC = () =>{
                                     </span>
                                     <PlusIcon width={16} height={16}/>
                                 </div>
-                                <WorkExperienceList workExperienceList={[{
-                                    id: 1,
-                                    workedYears: 3,
-                                    description: 'ООО "Рога и копыта"'
-                                }, {
-                                    id: 2,
-                                    workedYears: 5,
-                                    description: 'ООО "Рексофт"'
-                                }]}/>
+                                <WorkExperienceList workExperienceList={ selectedEmployee?.workExperience ?? [] }/>
                             </div>
                         </div>
                     </div>
