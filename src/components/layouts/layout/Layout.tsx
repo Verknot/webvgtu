@@ -28,7 +28,7 @@ export const Layout: FC<LayoutProps> = props => {
     }
 
     const goToAdminisrationHandler = () =>{
-        navigate(`/${RoutesPath.Administration}`)
+        navigate(RoutesPath.Administration)
     }
 
     const exitMenuItem: MenuItem = {
@@ -55,15 +55,6 @@ export const Layout: FC<LayoutProps> = props => {
                 </div>
                 <div className={ "layout__user-menu"}>
                     <UserMenu items = { role.role === 'admin' ? [ administrationMenuItem, exitMenuItem] : [exitMenuItem]} />
-                    <UserMenu items={[{
-                        id: "go_to_administration",
-                        action: () => {},
-                        label: "Администрирование"
-                    },{
-                        id: "exit",
-                        action: () => {},
-                        label: "Выйти"
-                    }]}/>
                 </div>
             </div>
             <div className="layout__body">

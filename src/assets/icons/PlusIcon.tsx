@@ -15,7 +15,7 @@ export const PlusIcon: FC<IconProps> = props => {
              viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"
              xmlnsXlink="http://www.w3.org/1999/xlink">
 
-            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g id="Icon-Set-Filled" transform="translate(-362.000000, -1037.000000)"
                    fill="#000000">
                     <path

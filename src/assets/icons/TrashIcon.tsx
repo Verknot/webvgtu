@@ -13,7 +13,7 @@ export const TrashIcon: FC<IconProps> = props => {
     return (
         <svg width={width} height={height} className={className} stroke={color} onClick={onClick} viewBox="0 -0.5 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg"
              >
-            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g id="Dribbble-Light-Preview" transform="translate(-179.000000, -360.000000)" fill="#000000">
                     <g id="icons" transform="translate(56.000000, 160.000000)">
                         <path

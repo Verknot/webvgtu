@@ -10,7 +10,7 @@ export const signIn= createAsyncThunk<LoginResponseDto, LoginRequestDto, AsyncTh
     '${NAMESPACE}/signIn',
     async(loginData, { rejectWithValue }) => {
         try {
-            return await AuthApi.signIn(loginData);
+            return await AuthApi().signIn(loginData);
         } catch (error) {
             return rejectWithValue((error as Error).message);
         }
@@ -22,8 +22,8 @@ export const signUp = createAsyncThunk<LoginResponseDto, RegistrationRequestDto,
     "${NAMESPACE}/signUp",
     async(registrationData, { rejectWithValue }) => {
         try {
-            await AuthApi.signUp(registrationData);
-            return await AuthApi.signIn({
+            await AuthApi().signUp(registrationData);
+            return await AuthApi().signIn({
                 login: registrationData.login,
                 password: registrationData.password
             });
